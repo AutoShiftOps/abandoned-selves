@@ -1,36 +1,34 @@
-import { createServerSupabaseClient } from '../../../../lib/supabase-server'
+import { createServerSupabaseClient } from '../../../../lib/supabase'
 import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 
-export async function POST(request) {
-  const supabase = createServerSupabaseClient(request)
-  const { data: { session } } = await supabase.auth.getSession()
-  if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+export async function POST() {
+  const supabase = await createServerSupabaseClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('stripe_customer_id, email')
-    .eq('id', session.user.id)
+    .select('stripe_customer_id')
+    .eq('id', user.id)
     .single()
 
-  // Create or retrieve Stripe customer
   let customerId = profile?.stripe_customer_id
   if (!customerId) {
     const customer = await stripe.customers.create({
-      email: session.user.email,
-      metadata: { supabase_user_id: session.user.id },
+      email: user.email,
+      metadata: { supabase_user_id: user.id },
     })
     customerId = customer.id
 
     await supabase
       .from('profiles')
       .update({ stripe_customer_id: customerId })
-      .eq('id', session.user.id)
+      .eq('id', user.id)
   }
 
-  // Create checkout session
   const checkoutSession = await stripe.checkout.sessions.create({
     customer: customerId,
     payment_method_types: ['card'],
@@ -38,7 +36,7 @@ export async function POST(request) {
     mode: 'payment',
     success_url: `${process.env.NEXT_PUBLIC_APP_URL}/museum?upgraded=true`,
     cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/museum`,
-    metadata: { supabase_user_id: session.user.id },
+    metadata: { supabase_user_id: user.id },
   })
 
   return NextResponse.json({ url: checkoutSession.url })

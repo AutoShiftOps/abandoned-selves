@@ -1,21 +1,24 @@
-import { createServerSupabaseClient } from '../../../lib/supabase-server'
+import { createServerSupabaseClient } from '../../../lib/supabase'
 import { NextResponse } from 'next/server'
 
 export async function POST(request) {
-  // 1. Verify user is authenticated
-  const supabase = createServerSupabaseClient(request)
-  const { data: { session } } = await supabase.auth.getSession()
-  if (!session) {
+  // createServerSupabaseClient is now async in Next.js 14
+  const supabase = await createServerSupabaseClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   const { selves } = await request.json()
+  const filled = (selves || []).filter(s => s.trim().length > 3)
 
-  if (!selves || selves.filter(s => s.trim().length > 3).length < 1) {
-    return NextResponse.json({ error: 'Please provide at least one abandoned self.' }, { status: 400 })
+  if (filled.length < 1) {
+    return NextResponse.json(
+      { error: 'Please provide at least one abandoned self.' },
+      { status: 400 }
+    )
   }
-
-  const filled = selves.filter(s => s.trim().length > 3)
 
   const prompt = `You are the curator of "The Museum of Abandoned Selves" — a surreal, poetic, slightly melancholic museum that displays lives people almost lived.
 
@@ -42,34 +45,31 @@ Respond ONLY with a valid JSON array (no markdown, no backticks, no preamble) wi
 ]`
 
   try {
-    const res = await fetch('https://api.together.xyz/inference', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${process.env.TOGETHER_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'meta-llama/Llama-2-70b-chat-hf',
-        prompt: prompt,
-        max_tokens: 2048,
-        temperature: 0.9,
-        top_p: 0.95,
-      }),
-    })
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { temperature: 0.9, maxOutputTokens: 2048 },
+        }),
+      }
+    )
 
     if (!res.ok) {
       const err = await res.json().catch(() => ({}))
-      throw new Error(err?.error?.message || `Together AI error ${res.status}`)
+      throw new Error(err?.error?.message || `Gemini error ${res.status}`)
     }
 
     const data = await res.json()
-    const text = data.output?.choices?.[0]?.text || ''
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || ''
     const clean = text.replace(/```json|```/g, '').trim()
     const exhibits = JSON.parse(clean)
 
     return NextResponse.json({ exhibits })
   } catch (err) {
-    console.error('Generation error:', err)
+    console.error('Gemini error:', err)
     return NextResponse.json({ error: err.message }, { status: 500 })
   }
 }
