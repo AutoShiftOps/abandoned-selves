@@ -1,8 +1,7 @@
-import { createServerSupabaseClient, createAdminClient } from '../../../lib/supabase'
+import { createServerSupabaseClient, createAdminClient } from '../../../lib/supabase-server'
 import { NextResponse } from 'next/server'
 import { nanoid } from 'nanoid'
 
-// GET /api/museums — fetch current user's museums
 export async function GET() {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -18,7 +17,6 @@ export async function GET() {
   return NextResponse.json({ museums: data })
 }
 
-// POST /api/museums — save a new museum
 export async function POST(request) {
   const supabase = await createServerSupabaseClient()
   const admin = createAdminClient()
@@ -26,7 +24,6 @@ export async function POST(request) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  // Check free tier limit
   const { data: profile } = await supabase
     .from('profiles')
     .select('is_paid, museum_count')
@@ -51,7 +48,6 @@ export async function POST(request) {
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
-  // Increment museum count
   await admin
     .from('profiles')
     .update({ museum_count: (profile?.museum_count || 0) + 1 })

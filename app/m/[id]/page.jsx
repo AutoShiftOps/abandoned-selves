@@ -2,7 +2,6 @@ import { createAdminClient } from '../../../lib/supabase-server'
 import { notFound } from 'next/navigation'
 import PublicMuseumViewer from '../../../components/PublicMuseumViewer'
 
-// Generate SEO metadata dynamically
 export async function generateMetadata({ params }) {
   const supabase = createAdminClient()
   const { data } = await supabase
@@ -17,7 +16,7 @@ export async function generateMetadata({ params }) {
   const firstSelf = data.selves[0]
   return {
     title: `${firstSelf} — Almost Became`,
-    description: `A museum exhibit for the life almost lived: ${firstSelf}. Built with Almost Became.`,
+    description: `A museum exhibit for the life almost lived: ${firstSelf}.`,
     openGraph: {
       title: `${firstSelf} — Almost Became`,
       description: 'A museum for the lives you almost lived.',

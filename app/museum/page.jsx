@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect, Suspense } from 'react'
-import { createClient } from '../../lib/supabase'
+import { createClient } from '../../lib/supabase-client'
 import { useRouter, useSearchParams } from 'next/navigation'
 import MuseumViewer from '../../components/MuseumViewer'
 

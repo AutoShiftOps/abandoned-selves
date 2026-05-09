@@ -2,9 +2,7 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse } from 'next/server'
 
 export async function middleware(request) {
-    let supabaseResponse = NextResponse.next({
-        request,
-    })
+    let supabaseResponse = NextResponse.next({ request })
 
     const supabase = createServerClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -27,10 +25,8 @@ export async function middleware(request) {
         }
     )
 
-    // Refresh session — required for Next.js App Router
     const { data: { user } } = await supabase.auth.getUser()
 
-    // If no user and trying to access /museum — redirect to home
     if (!user && request.nextUrl.pathname.startsWith('/museum')) {
         const loginUrl = new URL('/', request.url)
         loginUrl.searchParams.set('auth', 'required')

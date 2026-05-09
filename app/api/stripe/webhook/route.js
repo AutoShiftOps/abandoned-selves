@@ -4,7 +4,6 @@ import Stripe from 'stripe'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 
-// Stripe requires the raw body to verify the webhook signature
 export const runtime = 'nodejs'
 
 export async function POST(request) {
@@ -13,19 +12,22 @@ export async function POST(request) {
 
   let event
   try {
-    event = stripe.webhooks.constructEvent(body, signature, process.env.STRIPE_WEBHOOK_SECRET)
+    event = stripe.webhooks.constructEvent(
+      body,
+      signature,
+      process.env.STRIPE_WEBHOOK_SECRET
+    )
   } catch (err) {
     console.error('Webhook signature failed:', err.message)
     return NextResponse.json({ error: 'Invalid signature' }, { status: 400 })
   }
 
-  // Only handle completed payments
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object
     const userId = session.metadata?.supabase_user_id
 
     if (userId) {
-      const admin = createAdminClient(request)
+      const admin = createAdminClient()
       await admin
         .from('profiles')
         .update({ is_paid: true })

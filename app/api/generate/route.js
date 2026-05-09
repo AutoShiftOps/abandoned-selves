@@ -1,8 +1,7 @@
-import { createServerSupabaseClient } from '../../../lib/supabase'
+import { createServerSupabaseClient } from '../../../lib/supabase-server'
 import { NextResponse } from 'next/server'
 
 export async function POST(request) {
-  // createServerSupabaseClient is now async in Next.js 14
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
 
@@ -69,7 +68,7 @@ Respond ONLY with a valid JSON array (no markdown, no backticks, no preamble) wi
 
     return NextResponse.json({ exhibits })
   } catch (err) {
-    console.error('Gemini error:', err)
+    console.error('Generate error:', err)
     return NextResponse.json({ error: err.message }, { status: 500 })
   }
 }
