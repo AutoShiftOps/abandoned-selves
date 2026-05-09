@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { createClient } from '../lib/supabase'
 import { useRouter, useSearchParams } from 'next/navigation'
 
@@ -283,6 +283,14 @@ const SAMPLE_EXHIBIT = {
   ]
 }
 
+function SearchParamsHandler({ onAuthRequired }) {
+  const searchParams = useSearchParams()
+  useEffect(() => {
+    if (searchParams.get('auth') === 'required') onAuthRequired()
+  }, [searchParams, onAuthRequired])
+  return null
+}
+
 export default function LandingPage() {
   const [showAuth, setShowAuth] = useState(false)
   const [email, setEmail] = useState('')
@@ -290,13 +298,9 @@ export default function LandingPage() {
   const [sent, setSent] = useState(false)
   const [error, setError] = useState('')
   const router = useRouter()
-  const searchParams = useSearchParams()
   const supabase = createClient()
 
-  // If redirected here with ?auth=required, open modal
-  useEffect(() => {
-    if (searchParams.get('auth') === 'required') setShowAuth(true)
-  }, [searchParams])
+  const handleAuthRequired = () => setShowAuth(true)
 
   // If user is already logged in, redirect to museum
   useEffect(() => {
@@ -320,6 +324,10 @@ export default function LandingPage() {
   return (
     <>
       <style>{styles}</style>
+
+      <Suspense fallback={null}>
+        <SearchParamsHandler onAuthRequired={handleAuthRequired} />
+      </Suspense>
 
       {/* AUTH MODAL */}
       {showAuth && (

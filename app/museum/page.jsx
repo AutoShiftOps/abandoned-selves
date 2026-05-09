@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { createClient } from '../../lib/supabase'
 import { useRouter, useSearchParams } from 'next/navigation'
 import MuseumViewer from '../../components/MuseumViewer'
@@ -191,19 +191,28 @@ const LOADING_MSGS = [
   "Lighting candles in empty rooms...",
 ]
 
+function SearchParamsHandler({ onUpgraded }) {
+  const searchParams = useSearchParams()
+  useEffect(() => {
+    if (searchParams.get('upgraded') === 'true') {
+      onUpgraded()
+    }
+  }, [searchParams, onUpgraded])
+  return null
+}
+
 export default function MuseumPage() {
-  const [user, setUser]           = useState(null)
-  const [profile, setProfile]     = useState(null)
-  const [museums, setMuseums]     = useState([])
-  const [view, setView]           = useState('create') // create | generating | exhibit
+  const [user, setUser] = useState(null)
+  const [profile, setProfile] = useState(null)
+  const [museums, setMuseums] = useState([])
+  const [view, setView] = useState('create') // create | generating | exhibit
   const [activeMuseum, setActiveMuseum] = useState(null)
-  const [selves, setSelf]         = useState(['', '', ''])
-  const [error, setError]         = useState('')
+  const [selves, setSelf] = useState(['', '', ''])
+  const [error, setError] = useState('')
   const [loadingMsg, setLoadingMsg] = useState('')
-  const [toast, setToast]         = useState('')
+  const [toast, setToast] = useState('')
   const [upgrading, setUpgrading] = useState(false)
   const router = useRouter()
-  const searchParams = useSearchParams()
   const supabase = createClient()
 
   useEffect(() => {
@@ -214,13 +223,6 @@ export default function MuseumPage() {
       fetchMuseums()
     })
   }, [])
-
-  useEffect(() => {
-    if (searchParams.get('upgraded') === 'true') {
-      showToast('🎉 Welcome to unlimited museums!')
-      fetchProfile(user?.id)
-    }
-  }, [searchParams])
 
   const fetchProfile = async (uid) => {
     if (!uid) return
@@ -328,9 +330,18 @@ export default function MuseumPage() {
   const isPaid = profile?.is_paid
   const atFreeLimit = !isPaid && museums.length >= 1
 
+  const handleUpgraded = () => {
+    showToast('🎉 Welcome to unlimited museums!')
+    fetchProfile(user?.id)
+  }
+
   return (
     <>
       <style>{styles}</style>
+
+      <Suspense fallback={null}>
+        <SearchParamsHandler onUpgraded={handleUpgraded} />
+      </Suspense>
 
       {toast && <div className="toast">{toast}</div>}
 
@@ -407,8 +418,8 @@ export default function MuseumPage() {
                   ))}
                   {error && <div className="error-box">{error}</div>}
                   {atFreeLimit ? (
-                    <div style={{padding:'20px', border:'1px solid var(--amber-dim)', textAlign:'center'}}>
-                      <p style={{color:'var(--amber)', fontStyle:'italic', marginBottom:12}}>You've used your free museum. Upgrade for unlimited.</p>
+                    <div style={{ padding: '20px', border: '1px solid var(--amber-dim)', textAlign: 'center' }}>
+                      <p style={{ color: 'var(--amber)', fontStyle: 'italic', marginBottom: 12 }}>You've used your free museum. Upgrade for unlimited.</p>
                       <button className="create-btn" onClick={handleUpgrade} disabled={upgrading}>
                         {upgrading ? 'Loading...' : 'Upgrade for $4.99 →'}
                       </button>
