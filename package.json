@@ -18,7 +18,11 @@
     "stripe": "^15.7.0"
   },
   "devDependencies": {
-    "eslint": "^8",
-    "eslint-config-next": "^16.2.6"
+    "eslint": "^9",
+    "eslint-config-next": "^16.2.6",
+    "postcss": "^8.5.10"
+  },
+  "overrides": {
+    "postcss": "^8.5.10"
   }
 }
