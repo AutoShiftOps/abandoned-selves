@@ -1,0 +1,53 @@
+<svg width="240" height="240" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="arcPH" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#C9923A;stop-opacity:1"/>
+      <stop offset="78%" style="stop-color:#C9923A;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#C9923A;stop-opacity:0.05"/>
+    </linearGradient>
+    <radialGradient id="glowPH" cx="45%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#C9923A;stop-opacity:0.12"/>
+      <stop offset="100%" style="stop-color:#C9923A;stop-opacity:0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="240" height="240" fill="#0A0906" rx="20"/>
+  <rect width="240" height="240" fill="url(#glowPH)" rx="20"/>
+
+  <!-- Border -->
+  <rect x="10" y="10" width="220" height="220" fill="none" stroke="#2E2820" stroke-width="1" rx="14"/>
+
+  <!-- Almost-complete arc — large, centred -->
+  <path
+    d="M 120 28 A 88 88 0 1 1 183 177"
+    fill="none"
+    stroke="url(#arcPH)"
+    stroke-width="6"
+    stroke-linecap="round"/>
+
+  <!-- Dissolving dots -->
+  <circle cx="187" cy="183" r="3.5" fill="#C9923A" opacity="0.42"/>
+  <circle cx="192" cy="191" r="2.5" fill="#C9923A" opacity="0.24"/>
+  <circle cx="196" cy="199" r="1.8" fill="#C9923A" opacity="0.13"/>
+  <circle cx="200" cy="207" r="1.1" fill="#C9923A" opacity="0.07"/>
+
+  <!-- Anchor dot -->
+  <circle cx="120" cy="28" r="4" fill="#C9923A"/>
+
+  <!-- Italic A -->
+  <text x="120" y="138"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="64"
+    font-style="italic"
+    font-weight="700"
+    fill="#C9923A"
+    text-anchor="middle">A</text>
+
+  <!-- Brand name small -->
+  <text x="120" y="196"
+    font-family="Georgia, serif"
+    font-size="10"
+    fill="#8A6128"
+    letter-spacing="3.5"
+    text-anchor="middle">ALMOST BECAME</text>
+</svg>

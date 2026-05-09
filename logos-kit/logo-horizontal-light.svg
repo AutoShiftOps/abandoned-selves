@@ -1,0 +1,21 @@
+<svg viewBox="0 0 380 90" xmlns="http://www.w3.org/2000/svg" width="380" height="90">
+  <rect width="380" height="90" fill="#F5F0E8"/>
+
+  <path d="M 28.3,64.9 A 26,26 0 1 1 61.7,64.9"
+    stroke="#8A6128" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <circle cx="28.3" cy="64.9" r="3.2" fill="#8A6128"/>
+  <circle cx="61.7" cy="64.9" r="3.2" fill="#8A6128"/>
+  <circle cx="45" cy="19" r="1.6" fill="#C9923A" opacity="0.6"/>
+
+  <line x1="100" y1="18" x2="100" y2="72" stroke="#D4C9B4" stroke-width="1"/>
+
+  <text x="118" y="42"
+    font-family="'Playfair Display', 'Georgia', 'Times New Roman', serif"
+    font-size="18" font-weight="400" font-style="italic"
+    fill="#9A8E7E" letter-spacing="4">almost</text>
+
+  <text x="116" y="70"
+    font-family="'Playfair Display', 'Georgia', 'Times New Roman', serif"
+    font-size="26" font-weight="700"
+    fill="#1A1713" letter-spacing="1">became</text>
+</svg>

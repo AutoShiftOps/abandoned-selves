@@ -1,0 +1,27 @@
+<svg viewBox="0 0 380 90" xmlns="http://www.w3.org/2000/svg" width="380" height="90">
+  <rect width="380" height="90" fill="#0A0906"/>
+
+  <!-- Icon: arc centered at (45,45), radius 26, 280° open at bottom -->
+  <!-- Start: 220° from top → (45 + 26*sin220, 45 - 26*cos220) = (28.3, 64.9) -->
+  <!-- End:   140° from top → (45 + 26*sin140, 45 - 26*cos140) = (61.7, 64.9) -->
+  <path d="M 28.3,64.9 A 26,26 0 1 1 61.7,64.9"
+    stroke="#C9923A" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <circle cx="28.3" cy="64.9" r="3.2" fill="#C9923A"/>
+  <circle cx="61.7" cy="64.9" r="3.2" fill="#C9923A"/>
+  <circle cx="45" cy="19" r="1.6" fill="#8A6128" opacity="0.7"/>
+
+  <!-- Divider -->
+  <line x1="100" y1="18" x2="100" y2="72" stroke="#2E2820" stroke-width="1"/>
+
+  <!-- "almost" — light italic, muted — represents the ephemeral path -->
+  <text x="118" y="42"
+    font-family="'Playfair Display', 'Georgia', 'Times New Roman', serif"
+    font-size="18" font-weight="400" font-style="italic"
+    fill="#7A6E60" letter-spacing="4">almost</text>
+
+  <!-- "became" — bold, cream — represents what is solid and real -->
+  <text x="116" y="70"
+    font-family="'Playfair Display', 'Georgia', 'Times New Roman', serif"
+    font-size="26" font-weight="700"
+    fill="#E8DCC8" letter-spacing="1">became</text>
+</svg>

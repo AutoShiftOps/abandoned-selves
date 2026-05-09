@@ -1,0 +1,11 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" width="100" height="100">
+  <rect width="100" height="100" fill="#0A0906" rx="18"/>
+  <!-- 280° arc — Zeigarnik Effect: the open loop your brain can't ignore -->
+  <path d="M 29.43,74.51 A 32,32 0 1 1 70.57,74.51"
+    stroke="#C9923A" stroke-width="5" stroke-linecap="round" fill="none"/>
+  <!-- Endpoint dots — the two paths that almost met -->
+  <circle cx="29.43" cy="74.51" r="4" fill="#C9923A"/>
+  <circle cx="70.57" cy="74.51" r="4" fill="#C9923A"/>
+  <!-- Subtle inner glow dot at top of arc (the peak of the journey) -->
+  <circle cx="50" cy="18" r="2" fill="#8A6128" opacity="0.6"/>
+</svg>

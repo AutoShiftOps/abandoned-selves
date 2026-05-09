@@ -1,0 +1,41 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="arcGradLight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8A5A1A;stop-opacity:1"/>
+      <stop offset="75%" style="stop-color:#8A5A1A;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#8A5A1A;stop-opacity:0.08"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="200" height="200" fill="#FAFAF8" rx="16"/>
+
+  <!-- Outer orbit -->
+  <circle cx="100" cy="100" r="78" fill="none" stroke="#E8E0D4" stroke-width="1"/>
+
+  <!-- Almost-complete arc -->
+  <path
+    d="M 100 32 A 68 68 0 1 1 148 152"
+    fill="none"
+    stroke="url(#arcGradLight)"
+    stroke-width="5"
+    stroke-linecap="round"/>
+
+  <!-- Dissolving dots -->
+  <circle cx="152" cy="156" r="2.8" fill="#8A5A1A" opacity="0.40"/>
+  <circle cx="157" cy="162" r="2.0" fill="#8A5A1A" opacity="0.24"/>
+  <circle cx="161" cy="169" r="1.4" fill="#8A5A1A" opacity="0.14"/>
+  <circle cx="164" cy="176" r="0.9" fill="#8A5A1A" opacity="0.08"/>
+  <circle cx="167" cy="182" r="0.5" fill="#8A5A1A" opacity="0.04"/>
+
+  <!-- Anchor dot -->
+  <circle cx="100" cy="32" r="3.5" fill="#8A5A1A"/>
+
+  <!-- Italic A -->
+  <text x="100" y="115"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="52"
+    font-style="italic"
+    font-weight="700"
+    fill="#8A5A1A"
+    text-anchor="middle">A</text>
+</svg>

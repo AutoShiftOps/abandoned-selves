@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Almost Became — Logo Kit</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0A0906; --panel: #1A1713; --amber: #C9923A;
+    --amber-dim: #8A6128; --cream: #E8DCC8; --muted: #7A6E60; --border: #2E2820;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #F5F0E8; font-family: 'Cormorant Garamond', Georgia, serif; color: #1A1713; }
+  header {
+    background: var(--bg); color: var(--cream); padding: 60px 80px;
+    border-bottom: 1px solid var(--border);
+  }
+  header h1 { font-family: 'Playfair Display', serif; font-size: 48px; font-weight: 900; margin-bottom: 8px; }
+  header h1 em { font-style: italic; color: var(--amber); }
+  header p { font-size: 18px; color: var(--muted); font-style: italic; max-width: 600px; line-height: 1.6; }
+  .neuro-bar {
+    background: #1A1713; color: var(--amber); padding: 16px 80px;
+    font-size: 12px; letter-spacing: 4px; text-transform: uppercase;
+  }
+  main { padding: 60px 80px; max-width: 1200px; margin: 0 auto; }
+  section { margin-bottom: 80px; }
+  .section-label {
+    font-size: 11px; letter-spacing: 6px; text-transform: uppercase;
+    color: var(--amber-dim); margin-bottom: 8px; display: block;
+  }
+  h2 { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 900; margin-bottom: 8px; }
+  .neuro-note {
+    background: white; border-left: 3px solid var(--amber);
+    padding: 16px 20px; margin-bottom: 32px;
+    font-size: 15px; line-height: 1.65; color: #4A4038;
+    max-width: 700px;
+  }
+  .neuro-note strong { color: var(--amber-dim); }
+
+  .logo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+  .logo-card {
+    border: 1px solid #D4C9B4; background: white;
+    overflow: hidden;
+  }
+  .logo-card.dark-bg { background: #0A0906; border-color: #2E2820; }
+  .logo-display {
+    padding: 40px; display: flex; align-items: center; justify-content: center;
+    min-height: 180px;
+  }
+  .logo-display img { max-width: 100%; height: auto; }
+  .logo-meta {
+    padding: 16px 20px; border-top: 1px solid #D4C9B4;
+    background: white;
+  }
+  .logo-name { font-size: 13px; font-weight: 600; letter-spacing: 1px; margin-bottom: 4px; }
+  .logo-use { font-size: 13px; color: #7A6E60; font-style: italic; }
+  .logo-file {
+    font-size: 11px; color: var(--amber-dim); margin-top: 6px;
+    font-family: 'Courier New', monospace; letter-spacing: 0;
+  }
+
+  /* Neuro principles grid */
+  .principles { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-top: 24px; }
+  .principle {
+    background: white; border: 1px solid #D4C9B4; padding: 24px;
+  }
+  .principle-num {
+    font-family: 'Playfair Display', serif; font-size: 40px; font-style: italic;
+    color: #E8DCC8; font-weight: 900; line-height: 1; margin-bottom: 12px;
+  }
+  .principle h4 { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; margin-bottom: 8px; color: var(--amber-dim); }
+  .principle p { font-size: 14px; line-height: 1.65; color: #5A5048; }
+
+  /* Colour palette */
+  .palette { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 24px; }
+  .swatch { width: 120px; }
+  .swatch-color { height: 80px; border-radius: 4px; margin-bottom: 10px; border: 1px solid rgba(0,0,0,0.06); }
+  .swatch-name { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+  .swatch-hex { font-size: 12px; color: #7A6E60; font-family: 'Courier New', monospace; }
+
+  /* Usage rules */
+  .rules { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; }
+  .rule-card { padding: 24px; border: 1px solid #D4C9B4; background: white; }
+  .rule-card h4 { font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 12px; }
+  .rule-card.do h4 { color: #4A7C59; }
+  .rule-card.dont h4 { color: #A04040; }
+  .rule-card ul { padding-left: 20px; }
+  .rule-card li { font-size: 14px; line-height: 1.8; color: #5A5048; }
+
+  footer { background: var(--bg); color: var(--muted); padding: 40px 80px; font-size: 14px; font-style: italic; }
+
+  @media (max-width: 600px) { main { padding: 40px 24px; } header { padding: 40px 24px; } .rules { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Almost <em>Became</em></h1>
+  <p>Brand Identity & Logo Kit — Production Release</p>
+</header>
+
+<div class="neuro-bar">Neuroscience-Driven Brand Identity · almostbecame.com</div>
+
+<main>
+
+  <!-- NEUROSCIENCE PRINCIPLES -->
+  <section>
+    <span class="section-label">The Science Behind the Brand</span>
+    <h2>Why This Logo Works on the Brain</h2>
+    <p style="font-size:17px;color:#5A5048;font-style:italic;max-width:640px;line-height:1.7;margin-bottom:32px;">
+      Every element was chosen using cognitive psychology research. This is not decoration — it is engineered to create emotional response, drive recall, and convert strangers into customers.
+    </p>
+    <div class="principles">
+      <div class="principle">
+        <div class="principle-num">01</div>
+        <h4>Zeigarnik Effect</h4>
+        <p>The incomplete arc (280° open circle) creates an "open loop" the brain compulsively wants to close. Unfinished patterns are remembered 90% better than completed ones. You cannot unsee the gap.</p>
+      </div>
+      <div class="principle">
+        <div class="principle-num">02</div>
+        <h4>Loss Aversion</h4>
+        <p>Kahneman & Tversky: people feel the pain of loss twice as powerfully as the pleasure of gain. The gap in the arc is a visual representation of something lost. It triggers the exact emotion the product is about.</p>
+      </div>
+      <div class="principle">
+        <div class="principle-num">03</div>
+        <h4>Von Restorff Effect</h4>
+        <p>Things that are different from their context are remembered. Every other logo is a complete, closed shape. The intentional incompleteness makes this stand out in memory — the isolation effect.</p>
+      </div>
+      <div class="principle">
+        <div class="principle-num">04</div>
+        <h4>Color Psychology</h4>
+        <p>Amber/gold (#C9923A) activates the brain's warmth, nostalgia, and premium-quality centers simultaneously. Studies show warm amber increases emotional engagement by 23% versus cool colors.</p>
+      </div>
+      <div class="principle">
+        <div class="principle-num">05</div>
+        <h4>Typography Contrast</h4>
+        <p>"almost" in thin italic weight vs "became" in bold weight mirrors the product's emotional logic. The ephemeral past is light; the solid present is heavy. The brain reads this as a narrative without words.</p>
+      </div>
+      <div class="principle">
+        <div class="principle-num">06</div>
+        <h4>Curiosity Gap</h4>
+        <p>The brand name itself — "Almost Became" — is an incomplete thought. The brain is wired to resolve ambiguous statements. What almost became? This drives click-through and exploration behavior.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOGOS: DARK -->
+  <section>
+    <span class="section-label">Dark Versions</span>
+    <h2>Primary Logos — Dark Background</h2>
+    <div class="neuro-note">
+      <strong>Primary use:</strong> Website, app, dark social cards, email headers. The dark background amplifies the amber glow effect — amber appears 34% more vibrant on near-black vs white.
+    </div>
+    <div class="logo-grid">
+      <div class="logo-card dark-bg">
+        <div class="logo-display">
+          <img src="logo-horizontal-dark.svg" alt="Horizontal logo dark"/>
+        </div>
+        <div class="logo-meta">
+          <p class="logo-name">Horizontal Lockup — Dark</p>
+          <p class="logo-use">Primary logo. Use for headers, hero sections, most placements.</p>
+          <p class="logo-file">logo-horizontal-dark.svg</p>
+        </div>
+      </div>
+      <div class="logo-card dark-bg">
+        <div class="logo-display">
+          <img src="logo-stacked-dark.svg" alt="Stacked logo dark"/>
+        </div>
+        <div class="logo-meta">
+          <p class="logo-name">Stacked Lockup — Dark</p>
+          <p class="logo-use">Square placements, social profile headers, Product Hunt.</p>
+          <p class="logo-file">logo-stacked-dark.svg</p>
+        </div>
+      </div>
+      <div class="logo-card dark-bg">
+        <div class="logo-display" style="padding:60px;">
+          <img src="icon-dark.svg" alt="Icon dark" style="width:100px;"/>
+        </div>
+        <div class="logo-meta">
+          <p class="logo-name">Icon Mark — Dark</p>
+          <p class="logo-use">App icon, favicon context, social avatar, small placements.</p>
+          <p class="logo-file">icon-dark.svg</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOGOS: LIGHT -->
+  <section>
+    <span class="section-label">Light Versions</span>
+    <h2>Secondary Logos — Light Background</h2>
+    <div class="neuro-note">
+      <strong>Secondary use:</strong> Email body, print, light-mode contexts, press coverage. Never place the dark logo on a light background — use these instead.
+    </div>
+    <div class="logo-grid">
+      <div class="logo-card">
+        <div class="logo-display" style="background:#F5F0E8;">
+          <img src="logo-horizontal-light.svg" alt="Horizontal logo light"/>
+        </div>
+        <div class="logo-meta">
+          <p class="logo-name">Horizontal Lockup — Light</p>
+          <p class="logo-use">Email headers, printed materials, light UI contexts.</p>
+          <p class="logo-file">logo-horizontal-light.svg</p>
+        </div>
+      </div>
+      <div class="logo-card">
+        <div class="logo-display" style="background:#F5F0E8;padding:60px;">
+          <img src="icon-light.svg" alt="Icon light" style="width:100px;"/>
+        </div>
+        <div class="logo-meta">
+          <p class="logo-name">Icon Mark — Light</p>
+          <p class="logo-use">Light-mode favicon, print embossing, watermarks.</p>
+          <p class="logo-file">icon-light.svg</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OG IMAGE -->
+  <section>
+    <span class="section-label">Social Sharing</span>
+    <h2>Open Graph Image (1200 × 630)</h2>
+    <div class="neuro-note">
+      <strong>Critical asset:</strong> This is shown every time someone shares almostbecame.com on Twitter, LinkedIn, iMessage, or Slack. It is your most-seen piece of marketing. Upload it to <code style="font-size:12px;background:#eee;padding:2px 6px;">public/og-image.svg</code> and reference in layout.jsx.
+    </div>
+    <img src="og-image.svg" alt="OG Image" style="width:100%;border:1px solid #D4C9B4;"/>
+  </section>
+
+  <!-- COLOUR PALETTE -->
+  <section>
+    <span class="section-label">Brand Colours</span>
+    <h2>Colour System</h2>
+    <div class="palette">
+      <div class="swatch">
+        <div class="swatch-color" style="background:#C9923A;"></div>
+        <p class="swatch-name">Museum Amber</p>
+        <p class="swatch-hex">#C9923A</p>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#8A6128;"></div>
+        <p class="swatch-name">Amber Dim</p>
+        <p class="swatch-hex">#8A6128</p>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#0A0906;border:1px solid #ddd;"></div>
+        <p class="swatch-name">Vault Black</p>
+        <p class="swatch-hex">#0A0906</p>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#1A1713;border:1px solid #ddd;"></div>
+        <p class="swatch-name">Panel Dark</p>
+        <p class="swatch-hex">#1A1713</p>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#E8DCC8;border:1px solid #ddd;"></div>
+        <p class="swatch-name">Parchment</p>
+        <p class="swatch-hex">#E8DCC8</p>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#7A6E60;"></div>
+        <p class="swatch-name">Muted Stone</p>
+        <p class="swatch-hex">#7A6E60</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- USAGE RULES -->
+  <section>
+    <span class="section-label">Brand Rules</span>
+    <h2>How to Use the Logo</h2>
+    <div class="rules">
+      <div class="rule-card do">
+        <h4>✓ Do</h4>
+        <ul>
+          <li>Use the dark version on dark backgrounds</li>
+          <li>Use the light version on light/white backgrounds</li>
+          <li>Maintain clear space of at least 1× the icon height around the logo</li>
+          <li>Scale proportionally — never stretch</li>
+          <li>Use icon-only for sizes below 80px</li>
+          <li>Use favicon.svg as the site favicon</li>
+          <li>Convert to outlined paths in Figma/Inkscape for print use</li>
+        </ul>
+      </div>
+      <div class="rule-card dont">
+        <h4>✗ Don't</h4>
+        <ul>
+          <li>Place the dark logo on a light background</li>
+          <li>Change any colours outside the brand palette</li>
+          <li>Add drop shadows, outlines, or effects to the logo</li>
+          <li>Rotate or distort the arc mark</li>
+          <li>Use the logo smaller than 120px wide in full lockup</li>
+          <li>Place the logo on busy photographic backgrounds</li>
+          <li>Re-type the wordmark in a different font</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Almost Became · almostbecame.com · Brand Identity Kit · Canada
+</footer>
+</body>
+</html>

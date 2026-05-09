@@ -1,0 +1,22 @@
+<svg viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg" width="1200" height="630">
+  <rect width="1200" height="630" fill="#0A0906"/>
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="45%" r="50%">
+      <stop offset="0%" style="stop-color:#C9923A;stop-opacity:0.08"/>
+      <stop offset="100%" style="stop-color:#0A0906;stop-opacity:0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <line x1="80" y1="60" x2="1120" y2="60" stroke="#2E2820" stroke-width="1"/>
+  <text x="600" y="118" font-family="Georgia,serif" font-size="13" fill="#8A6128" letter-spacing="8" text-anchor="middle">PERMANENT COLLECTION</text>
+  <path d="M 522.9,401.9 A 120,120 0 1 1 677.1,401.9" stroke="#C9923A" stroke-width="10" stroke-linecap="round" fill="none"/>
+  <circle cx="522.9" cy="401.9" r="9" fill="#C9923A"/>
+  <circle cx="677.1" cy="401.9" r="9" fill="#C9923A"/>
+  <circle cx="600" cy="190" r="5" fill="#8A6128" opacity="0.6"/>
+  <text x="600" y="478" font-family="Georgia,serif" font-size="36" font-style="italic" fill="#7A6E60" letter-spacing="14" text-anchor="middle">almost</text>
+  <text x="600" y="528" font-family="Georgia,serif" font-size="54" font-weight="bold" fill="#E8DCC8" letter-spacing="4" text-anchor="middle">became</text>
+  <text x="600" y="582" font-family="Georgia,serif" font-size="16" fill="#4A4038" letter-spacing="3" text-anchor="middle" font-style="italic">A museum for the lives you almost lived</text>
+  <line x1="80" y1="610" x2="1120" y2="610" stroke="#2E2820" stroke-width="1"/>
+  <text x="90" y="52" font-family="Georgia,serif" font-size="14" fill="#2E2820">+</text>
+  <text x="1100" y="52" font-family="Georgia,serif" font-size="14" fill="#2E2820">+</text>
+</svg>

@@ -1,0 +1,62 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="arcGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#C9923A;stop-opacity:1"/>
+      <stop offset="75%" style="stop-color:#C9923A;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#C9923A;stop-opacity:0.1"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="200" height="200" fill="#0A0906" rx="16"/>
+
+  <!--
+    Almost-complete circle arc.
+    Neuroscience: Zeigarnik effect — incomplete shapes demand
+    the brain's attention and are remembered longer than complete ones.
+    The gap at top-right is the "almost" — the life not quite lived.
+    Path: circle of r=68, center 100,100
+    Start at top (100,32), go clockwise, stop just before completing
+  -->
+
+  <!-- Outer thin orbit ring — very faint, complete -->
+  <circle cx="100" cy="100" r="78" fill="none" stroke="#2E2820" stroke-width="1"/>
+
+  <!-- Main arc — almost complete, dissolves at the gap -->
+  <path
+    d="M 100 32
+       A 68 68 0 1 1 148 152"
+    fill="none"
+    stroke="url(#arcGrad)"
+    stroke-width="5"
+    stroke-linecap="round"
+    filter="url(#glow)"/>
+
+  <!-- Dissolving dots at the open end — the "almost" moment -->
+  <circle cx="152" cy="156" r="2.8" fill="#C9923A" opacity="0.45"/>
+  <circle cx="157" cy="162" r="2.0" fill="#C9923A" opacity="0.28"/>
+  <circle cx="161" cy="169" r="1.4" fill="#C9923A" opacity="0.16"/>
+  <circle cx="164" cy="176" r="0.9" fill="#C9923A" opacity="0.09"/>
+  <circle cx="167" cy="182" r="0.5" fill="#C9923A" opacity="0.05"/>
+
+  <!-- Small filled circle at start of arc (the beginning — solid) -->
+  <circle cx="100" cy="32" r="3.5" fill="#C9923A"/>
+
+  <!-- Inner italic "A" — stands for Almost, anchors the mark -->
+  <text x="100" y="115"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="52"
+    font-style="italic"
+    font-weight="700"
+    fill="#C9923A"
+    text-anchor="middle"
+    opacity="0.92">A</text>
+
+</svg>
