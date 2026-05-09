@@ -270,6 +270,27 @@ const styles = `
     font-size: 16px; font-style: italic; color: var(--amber);
     margin-bottom: 12px;
   }
+  .google-btn {
+    width: 100%; padding: 14px;
+    background: white; border: 1px solid #D4C9B4;
+    color: #1A1713;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px; font-weight: 600;
+    cursor: pointer; transition: all 0.2s;
+    display: flex; align-items: center;
+    justify-content: center; gap: 12px;
+    margin-bottom: 4px;
+  }
+  .google-btn:hover { background: #F5F0E8; border-color: #8A6128; }
+  .modal-divider {
+    display: flex; align-items: center;
+    gap: 12px; margin: 16px 0;
+    color: var(--muted); font-size: 13px; font-style: italic;
+  }
+  .modal-divider::before, .modal-divider::after {
+    content: ''; flex: 1;
+    height: 1px; background: var(--border);
+  }
 `
 
 // Sample exhibit shown on landing page
@@ -309,6 +330,16 @@ export default function LandingPage() {
     })
   }, [supabase, router])
 
+  const handleGoogleSignIn = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`,
+      },
+    })
+    if (error) setError(error.message)
+  }
+
   const handleMagicLink = async () => {
     if (!email.trim()) return
     setLoading(true); setError('')
@@ -337,6 +368,19 @@ export default function LandingPage() {
             <p className="section-label">Welcome</p>
             <h3>Enter the Museum</h3>
             <p>We'll send you a magic link — no password needed.</p>
+
+            {/* Google Sign In — Primary */}
+            <button className="google-btn" onClick={handleGoogleSignIn}>
+              <svg width="18" height="18" viewBox="0 0 18 18" style={{ flexShrink: 0 }}>
+                <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.716v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z" />
+                <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.185l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z" />
+                <path fill="#FBBC05" d="M3.964 10.706c-.18-.54-.282-1.117-.282-1.706s.102-1.166.282-1.706V4.962H.957C.347 6.175 0 7.55 0 9s.348 2.825.957 4.038l3.007-2.332z" />
+                <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.962L3.964 7.294C4.672 5.167 6.656 3.58 9 3.58z" />
+              </svg>
+              Continue with Google
+            </button>
+
+            <div className="modal-divider"><span>or use email</span></div>
 
             {sent ? (
               <div className="modal-success">
