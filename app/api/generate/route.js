@@ -2,77 +2,59 @@ import { createServerSupabaseClient } from '../../../lib/supabase-server'
 import { NextResponse } from 'next/server'
 
 // ── Rate Limit Store ───────────────────────────────────────────────
-// In-memory map: userId → array of request timestamps
-// Resets naturally when Vercel restarts the serverless function
 const rateLimitMap = new Map()
 
 function isRateLimited(userId) {
   const now = Date.now()
-  const windowMs = 24 * 60 * 60 * 1000                          // 24 hour window
-  const maxRequests = parseInt(process.env.RATE_LIMIT_PER_USER || '5') // 5 per day default
+  const windowMs = 24 * 60 * 60 * 1000
+  const maxRequests = parseInt(process.env.RATE_LIMIT_PER_USER || '5')
 
-  // Get existing timestamps for this user, remove expired ones
   const timestamps = (rateLimitMap.get(userId) || [])
     .filter(t => now - t < windowMs)
 
-  if (timestamps.length >= maxRequests) {
-    return true // blocked
-  }
+  if (timestamps.length >= maxRequests) return true
 
-  // Record this request
   timestamps.push(now)
   rateLimitMap.set(userId, timestamps)
-  return false // allowed
+  return false
 }
 
-// ── How many requests has this user made today ─────────────────────
 function getRequestCount(userId) {
   const now = Date.now()
   const windowMs = 24 * 60 * 60 * 1000
-  const timestamps = (rateLimitMap.get(userId) || [])
-    .filter(t => now - t < windowMs)
-  return timestamps.length
+  return (rateLimitMap.get(userId) || [])
+    .filter(t => now - t < windowMs).length
 }
 
 // ── Main Handler ───────────────────────────────────────────────────
 export async function POST(request) {
 
-  // 1. Auth check — no session = instant reject
+  // 1. Auth check
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
 
   if (!user) {
-    return NextResponse.json(
-      { error: 'Unauthorized' },
-      { status: 401 }
-    )
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  // 2. Rate limit check — max 5 museums per user per 24 hours
+  // 2. Rate limit — 5 museums per user per 24 hours
   if (isRateLimited(user.id)) {
-    const count = parseInt(process.env.RATE_LIMIT_PER_USER || '5')
+    const limit = parseInt(process.env.RATE_LIMIT_PER_USER || '5')
     return NextResponse.json(
       {
         error: 'RATE_LIMIT',
-        message: `You have created ${count} museums today. Come back tomorrow for more.`
+        message: `You have created ${limit} museums today. Come back tomorrow.`
       },
-      {
-        status: 429,
-        headers: {
-          'Retry-After': '86400', // tell client to retry after 24 hours
-          'X-RateLimit-Limit': String(count),
-          'X-RateLimit-Remaining': '0',
-        }
-      }
+      { status: 429 }
     )
   }
 
   // 3. Validate input
   const body = await request.json().catch(() => ({}))
   const { selves } = body
-  const filled = (selves || []).filter(s =>
-    typeof s === 'string' && s.trim().length > 3 && s.trim().length < 200
-  )
+  const filled = (selves || [])
+    .filter(s => typeof s === 'string' && s.trim().length > 3 && s.trim().length < 200)
+    .slice(0, 3) // max 3 selves
 
   if (filled.length < 1) {
     return NextResponse.json(
@@ -81,12 +63,9 @@ export async function POST(request) {
     )
   }
 
-  // Cap at 3 selves maximum — no one needs more
-  const safeSelf = filled.slice(0, 3)
-
-  // 4. Check Gemini API key exists before making the call
-  if (!process.env.GEMINI_API_KEY) {
-    console.error('GEMINI_API_KEY is not set in environment variables')
+  // 4. Check API key
+  if (!process.env.GROQ_API_KEY) {
+    console.error('GROQ_API_KEY is not set in environment variables')
     return NextResponse.json(
       { error: 'Server configuration error. Please contact support.' },
       { status: 500 }
@@ -99,7 +78,7 @@ export async function POST(request) {
 For each of these abandoned selves, create a detailed museum exhibit. Be evocative, specific, and gently haunting. Write as if these lives really happened.
 
 Abandoned selves:
-${safeSelf.map((s, i) => `${i + 1}. ${s}`).join('\n')}
+${filled.map((s, i) => `${i + 1}. ${s}`).join('\n')}
 
 Respond ONLY with a valid JSON array (no markdown, no backticks, no preamble) with this exact structure:
 [
@@ -118,50 +97,41 @@ Respond ONLY with a valid JSON array (no markdown, no backticks, no preamble) wi
   }
 ]`
 
-  // 6. Call Gemini
+  // 6. Call Groq API
   try {
     const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
+      'https://api.groq.com/openai/v1/chat/completions',
       {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
+        },
         body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: {
-            temperature: 0.9,
-            maxOutputTokens: 2048,
-            thinkingConfig: {
-              thinkingBudget: 0  // disables thinking mode — faster responses
-            }
-          },
+          model: 'llama-3.3-70b-versatile', // best free model — excellent creative writing
+          messages: [{ role: 'user', content: prompt }],
+          temperature: 0.9,
+          max_tokens: 2048,
         }),
       }
     )
 
-    // Handle Gemini-specific errors clearly
+    // Handle Groq-specific errors
     if (!res.ok) {
       const err = await res.json().catch(() => ({}))
-      const message = err?.error?.message || `Gemini error ${res.status}`
+      const message = err?.error?.message || `Groq error ${res.status}`
 
-      // Specific error messages for common failures
-      if (res.status === 400) {
-        console.error('Gemini 400 - bad request:', message)
+      if (res.status === 401) {
+        console.error('Groq 401 - invalid API key')
         return NextResponse.json(
-          { error: 'Generation failed. Please try different wording.' },
-          { status: 400 }
-        )
-      }
-      if (res.status === 403 || message.includes('API key')) {
-        console.error('Gemini 403 - invalid API key')
-        return NextResponse.json(
-          { error: 'API key error. Please contact support.' },
+          { error: 'API configuration error. Please contact support.' },
           { status: 500 }
         )
       }
       if (res.status === 429) {
-        console.error('Gemini 429 - quota exceeded')
+        console.error('Groq 429 - rate limit hit')
         return NextResponse.json(
-          { error: 'The museum is very busy right now. Please try again in a few minutes.' },
+          { error: 'The museum is very busy right now. Please try again in a minute.' },
           { status: 429 }
         )
       }
@@ -170,34 +140,33 @@ Respond ONLY with a valid JSON array (no markdown, no backticks, no preamble) wi
     }
 
     const data = await res.json()
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || ''
+
+    // Groq uses OpenAI response format
+    const text = data.choices?.[0]?.message?.content || ''
 
     if (!text) {
-      throw new Error('Empty response from Gemini')
+      throw new Error('Empty response from AI. Please try again.')
     }
 
-    // Safely parse JSON — strip markdown fences if present
+    // Safely parse JSON
     const clean = text.replace(/```json\n?|\n?```/g, '').trim()
     let exhibits
 
     try {
       exhibits = JSON.parse(clean)
     } catch {
-      console.error('JSON parse failed. Raw text:', text.slice(0, 200))
+      console.error('JSON parse failed. Raw:', text.slice(0, 300))
       throw new Error('Could not parse museum data. Please try again.')
     }
 
-    // Validate the response has the right shape
     if (!Array.isArray(exhibits) || exhibits.length === 0) {
-      throw new Error('Invalid museum data received. Please try again.')
+      throw new Error('Invalid museum data. Please try again.')
     }
 
-    // Log usage for monitoring (no personal data)
-    console.log(`Museum generated: ${safeSelf.length} selves, user ${user.id.slice(0, 8)}...`)
+    console.log(`✅ Museum generated: ${filled.length} selves, user ${user.id.slice(0, 8)}...`)
 
     return NextResponse.json({
       exhibits,
-      // Tell client how many requests they have left today
       requestsRemaining: parseInt(process.env.RATE_LIMIT_PER_USER || '5') - getRequestCount(user.id)
     })
 
