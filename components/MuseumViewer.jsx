@@ -4,6 +4,7 @@ import {
   trackShareClick, trackLinkCopied, trackFinalRoomView,
   trackFeedbackSubmit, trackEmailReminderOptIn
 } from '../lib/analytics'
+import ExhibitRoom from './ExhibitRoom'
 
 const styles = `
   .museum-viewer { min-height: 100%; }
@@ -158,36 +159,13 @@ export default function MuseumViewer({ museum }) {
           </button>
         </div>
 
-        {activeTab < exhibits.length && (() => {
-          const ex = exhibits[activeTab]
-          return (
-            <div className="exhibit" key={activeTab}>
-              <p className="exhibit-num">Exhibit {activeTab + 1} of {exhibits.length}</p>
-              <h2 className="exhibit-title">{ex.title}</h2>
-              <p className="exhibit-dates">{ex.years}</p>
-              <div className="plaque">
-                <p className="plaque-label">Museum Plaque</p>
-                <p>{ex.plaque}</p>
-              </div>
-              <p className="bio">{ex.bio}</p>
-              <p className="artifacts-title">Objects Found in the Collection</p>
-              {ex.artifacts?.map((a, j) => (
-                <div className="artifact-card" key={j}>
-                  <span className="artifact-icon">{a.icon}</span>
-                  <div>
-                    <p className="artifact-name">{a.name}</p>
-                    <p className="artifact-desc">{a.description}</p>
-                  </div>
-                </div>
-              ))}
-              <div className="review-block">
-                <p className="review-label">Guest Book Entry</p>
-                <p className="review-text">{ex.review}</p>
-                <p className="review-author">— {ex.reviewer}</p>
-              </div>
-            </div>
-          )
-        })()}
+        {activeTab < exhibits.length && (
+          <ExhibitRoom
+            exhibit={exhibits[activeTab]}
+            index={activeTab}
+            total={exhibits.length}
+          />
+        )}
 
         {activeTab === exhibits.length && (
           <div className="final-room">

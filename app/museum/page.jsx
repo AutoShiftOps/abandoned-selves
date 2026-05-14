@@ -3,6 +3,8 @@ import { useState, useEffect, Suspense } from 'react'
 import { createClient } from '../../lib/supabase-client'
 import { useRouter, useSearchParams } from 'next/navigation'
 import MuseumViewer from '../../components/MuseumViewer'
+import CinematicLoading from '../../components/CinematicLoading'
+import ExhibitRoom from '../../components/ExhibitRoom'
 
 const styles = `
   .app-shell { min-height: 100vh; display: flex; flex-direction: column; }
@@ -433,16 +435,7 @@ export default function MuseumPage() {
               </div>
             )}
 
-            {view === 'generating' && (
-              <div className="generating">
-                <div className="generating-candle">🕯️</div>
-                <h3>The museum is being built...</h3>
-                <p>{loadingMsg}</p>
-                <div className="dots">
-                  <span /><span /><span />
-                </div>
-              </div>
-            )}
+            {view === 'generating' && <CinematicLoading selves={selves.filter(s => s.trim())} />}
 
             {view === 'exhibit' && activeMuseum && (
               <MuseumViewer museum={activeMuseum} />
