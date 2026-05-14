@@ -9,11 +9,20 @@ export async function POST() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const { data: profile } = await supabase
+  let { data: profile } = await supabase
     .from('profiles')
     .select('stripe_customer_id')
     .eq('id', user.id)
     .single()
+
+  if (!profile) {
+    const { data: newProfile } = await supabase
+      .from('profiles')
+      .insert({ id: user.id, email: user.email, is_paid: false, museum_count: 0 })
+      .select()
+      .single()
+    profile = newProfile
+  }
 
   let customerId = profile?.stripe_customer_id
   if (!customerId) {

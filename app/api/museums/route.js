@@ -24,11 +24,21 @@ export async function POST(request) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const { data: profile } = await supabase
+  let { data: profile } = await supabase
     .from('profiles')
     .select('is_paid, museum_count')
     .eq('id', user.id)
     .single()
+
+  if (!profile) {
+    // Profile missing — create it now (handles Google OAuth users)
+    const { data: newProfile } = await supabase
+      .from('profiles')
+      .insert({ id: user.id, email: user.email, is_paid: false, museum_count: 0 })
+      .select()
+      .single()
+    profile = newProfile
+  }
 
   if (!profile?.is_paid && (profile?.museum_count || 0) >= 1) {
     return NextResponse.json(
